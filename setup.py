@@ -9,6 +9,6 @@ setup(name='openapi-typed',
       license='MIT',
       packages=['openapi_typed'],
       install_requires=[
-          'pydantic',
+          'typing-extensions',
       ],
       zip_safe=False)

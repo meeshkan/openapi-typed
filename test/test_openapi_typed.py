@@ -1,4 +1,5 @@
-from openapi_typed import *
+from openapi_typed import Response, OpenAPIObject
+from typing import cast
 import json
 
 meow = {
@@ -246,5 +247,4 @@ meow = {
 
 def test_schema():
     o = OpenAPIObject(**meow)
-    print(o.paths["/pets"].get.responses["200"])
-    assert o.paths["/pets"].get.responses["200"].content["application/json"].schema.type is "array"
+    assert o['paths']["/pets"]['get']['responses']["200"]['content']["application/json"]['schema']['type'] is "array"

@@ -1,303 +1,311 @@
 from typing import Optional, List, Union, Any, Dict
-from pydantic import BaseModel, Schema as XSchema
+from typing_extensions import TypedDict
 
-class Discriminator(BaseModel):
+class _Discriminator(TypedDict):
   propertyName: str
-  mapping: Optional[Dict[str, str]]
 
-class ExternalDocumentation(BaseModel):
-  description: Optional[str]
+class Discriminator(_Discriminator, total=False):
+  mapping: Dict[str, str]
+
+
+class _ExternalDocumentation(TypedDict):
   url: str
 
-class XML(BaseModel):
-  name: Optional[str]
-  namespace: Optional[str]
-  prefix: Optional[str]
-  attribute: Optional[bool]
-  wrapped: Optional[bool]
+class ExternalDocumentation(_ExternalDocumentation, total=False):
+  description: str
 
-class Reference(BaseModel):
-    rrrrrrrrref: str = XSchema(None, alias='$ref')
-
-class Schema(BaseModel):
-    title: Optional[str]
-    multipleOf: Optional[float]
-    maximum: Optional[float]
-    exclusiveMaximum: Optional[bool]
-    minimum: Optional[float]
-    exclusiveMinimum: Optional[bool]
-    maxLength: Optional[float]
-    minLength: Optional[float]
-    pattern: Optional[str]
-    maxItems: Optional[float]
-    minItems: Optional[float]
-    uniqueItems: Optional[bool]
-    maxProperties: Optional[float]
-    minProperties: Optional[float]
-    required: Optional[List[str]]
-    enum: Optional[List[Any]]
-    type: Optional[str]
-    nnnnnot: Optional[Union['Schema', Reference]] = XSchema(None, alias='not')
-    allOf: Optional[List[Union['Schema', Reference]]]
-    oneOf: Optional[List[Union['Schema', Reference]]]
-    anyOf: Optional[List[Union['Schema', Reference]]]
-    items: Optional[Union[List[Union['Schema', Reference]], 'Schema', Reference]]
-    properties: Optional[Dict[str, Union['Schema', Reference]]]
-    additionalProperties: Optional[Union['Schema', Reference, bool]]
-    description: Optional[str]
-    format: Optional[str]
-    default: Optional[Any]
-    nullable: Optional[bool]
-    discriminator: Optional[Discriminator]
-    readOnly: Optional[bool]
-    writeOnly: Optional[bool]
-    example: Optional[Any]
-    externalDocs: Optional[ExternalDocumentation]
-    deprecated: Optional[bool]
-    xml: Optional[XML]
-
-
-class Contact(BaseModel):
-    name: Optional[str]
-    url: Optional[str]
-    email: Optional[str]
-
-class License(BaseModel):
+class XML(TypedDict, total=False):
   name: str
-  url: Optional[str]
+  namespace: str
+  prefix: str
+  attribute: bool
+  wrapped: bool
 
-class Info(BaseModel):
+Reference = TypedDict('Reference', { '$ref': str })
+
+Schema = TypedDict('Schema',
+    {'title': str,
+    'multipleOf': float,
+    'maximum': float,
+    'exclusiveMaximum': bool,
+    'minimum': float,
+    'exclusiveMinimum': bool,
+    'maxLength': float,
+    'minLength': float,
+    'pattern': str,
+    'maxItems': float,
+    'minItems': float,
+    'uniqueItems': bool,
+    'maxProperties': float,
+    'minProperties': float,
+    'required': List[str],
+    'enum': List[Any],
+    'type': str,
+    'not': Union['Schema', Reference],
+    'allOf': List[Union['Schema', Reference]],
+    'oneOf': List[Union['Schema', Reference]],
+    'anyOf': List[Union['Schema', Reference]],
+    'items': Union[List[Union['Schema', Reference]], 'Schema', Reference],      
+    'properties': Dict[str, Union['Schema', Reference]],
+    'additionalProperties': Union['Schema', Reference, bool],
+    'description': str,
+    'format': str,
+    'default': Any,
+    'nullable': bool,
+    'discriminator': Discriminator,
+    'readOnly': bool,
+    'writeOnly': bool,
+    'example': Any,
+    'externalDocs': ExternalDocumentation,
+    'deprecated': bool,
+    'xml': XML}, total=False)
+
+
+class Contact(TypedDict, total=False):
+    name: str
+    url: str
+    email: str
+
+class _License(TypedDict):
+  name: str
+
+class License(_License, total = False):
+  url: str
+
+class _Info(TypedDict):
     title: str
-    description: Optional[str]
-    termsOfService: Optional[str]
-    contact: Optional[Contact]
-    license: Optional[License]
     version: str
 
-class ServerVariable(BaseModel):
-  enum: Optional[List[str]]
+class Info(_Info, total=False):
+    description: str
+    termsOfService: str
+    contact: Contact
+    license: License
+
+class _ServerVariable(TypedDict):
   default: str
-  description: Optional[str]
 
-class Server(BaseModel):
-  url: str
-  description: Optional[str]
-  variables: Optional[Dict[str, ServerVariable]]
-
-class Link(BaseModel):
-  operationId: Optional[str]
-  operationRef: Optional[str]
-  parameters: Optional[Dict[str, Any]]
-  requestBody: Optional[Any]
-  description: Optional[str]
-  server: Optional[Server]
-
-class Example(BaseModel):
-  summary: Optional[str]
-  description: Optional[str]
-  value: Optional[Any]
-  externalValue: Optional[str]
-
-class Encoding(BaseModel):
-    contentType: Optional[str]
-    headers: Optional[Dict[str, 'Header']]
-    style: Optional[str]
-    explode: Optional[bool]
-    allowReserved: Optional[bool]
-
-class MediaType(BaseModel):
-  sssssssschema: Optional[Union[Schema, Reference]] = XSchema(None, alias='schema')
-  example: Optional[Any]
-  examples: Optional[Dict[str, Union[Example, Reference]]]
-  encoding: Optional[Dict[str, Encoding]]
-
-class Header(BaseModel):
-  description: Optional[str]
-  required: Optional[bool]
-  deprecated: Optional[bool]
-  allowEmptyValue: Optional[bool]
-  style: Optional[str]
-  explode: Optional[bool]
-  allowReserved: Optional[bool]
-  sssssssschema: Optional[Union[Schema, Reference]] = XSchema(None, alias='schema')
-  content: Optional[Dict[str, MediaType]]
-  example: Optional[Any]
-  examples: Optional[Dict[str, Union[Example, Reference]]]
-
-class Operation(BaseModel):
-  tags: Optional[List[str]]
-  summary: Optional[str]
-  description: Optional[str]
-  externalDocs: Optional[ExternalDocumentation]
-  operationId: Optional[str]
-  parameters: Optional[List[Union['Parameter', Reference]]]
-  requestBody: Optional[Union['RequestBody', Reference]]
-  responses: 'Responses'
-  callbacks: Optional[Dict[str, Union['Callback', Reference]]]
-  deprecated: Optional[bool]
-  security: Optional[List['SecurityRequirement']]
-  servers: Optional[List[Server]]
-
-class Response(BaseModel):
+class ServerVariable(_ServerVariable, total=False):
+  enum: List[str]
   description: str
-  headers: Optional[Dict[str, Union[Header, Reference]]]
-  content: Optional[Dict[str, MediaType]]
-  links: Optional[Dict[str, Union[Link, Reference]]]
 
-class Parameter(BaseModel):
-  name: str
-  iiiiiiiiiiiin: str = XSchema(None, alias='in')
-  description: Optional[str]
-  required: Optional[bool]
-  deprecated: Optional[bool]
-  allowEmptyValue: Optional[bool]
-  style: Optional[str]
-  explode: Optional[bool]
-  allowReserved: Optional[bool]
-  sssssssschema: Optional[Union[Schema, Reference]] = XSchema(None, alias='schema')
-  content: Optional[Dict[str, MediaType]]
-  example: Optional[Any]
-  examples: Optional[Dict[str, Union[Example, Reference]]]
+class _Server(TypedDict):
+  url: str
 
+class Server(TypedDict, total=False):
+  description: str
+  variables: Dict[str, ServerVariable]
 
-class RequestBody(BaseModel):
-  description: Optional[str]
+class Link(TypedDict, total=False):
+  operationId: str
+  operationRef: str
+  parameters: Dict[str, Any]
+  requestBody: Any
+  description: str
+  server: Server
+
+class Example(TypedDict, total=False):
+  summary: str
+  description: str
+  value: Any
+  externalValue: str
+
+class Encoding(TypedDict, total=False):
+    contentType: str
+    headers: Dict[str, 'Header']
+    style: str
+    explode: bool
+    allowReserved: bool
+
+class MediaType(TypedDict, total=False):
+  schema: Union[Schema, Reference]
+  example: Any
+  examples: Dict[str, Union[Example, Reference]]
+  encoding: Dict[str, Encoding]
+
+class Header(TypedDict, total=False):
+  description: str
+  required: bool
+  deprecated: bool
+  allowEmptyValue: bool
+  style: str
+  explode: bool
+  allowReserved: bool
+  schema: Union[Schema, Reference]
   content: Dict[str, MediaType]
-  required: Optional[bool]
+  example: Any
+  examples: Dict[str, Union[Example, Reference]]
 
-class APIKeySecurityScheme(BaseModel):
-  type: str
-  name: str
-  iiiiiiiiiiiin: str = XSchema(None, alias='in')
-  description: Optional[str]
+class _Operation(TypedDict):
+    responses: 'Responses'
 
-class HTTPSecurityScheme(BaseModel):
+class Operation(_Operation, total=False):
+  tags: List[str]
+  summary: str
+  description: str
+  externalDocs: ExternalDocumentation
+  operationId: str
+  parameters: List[Union['Parameter', Reference]]
+  requestBody: Union['RequestBody', Reference]
+  callbacks: Dict[str, Union['Callback', Reference]]
+  deprecated: bool
+  security: List['SecurityRequirement']
+  servers: List[Server]
+
+class _Response(TypedDict):
+  description: str
+
+class Response(_Response, total=False):
+  headers: Dict[str, Union[Header, Reference]]
+  content: Dict[str, MediaType]
+  links: Dict[str, Union[Link, Reference]]
+
+_Parameter = TypedDict('_Parameter', {
+  'name': str,
+  'in':str
+})
+
+class Parameter(_Parameter, total=False):
+  description: str
+  required: bool
+  deprecated: bool
+  allowEmptyValue: bool
+  style: str
+  explode: bool
+  allowReserved: bool
+  schema: Union[Schema, Reference]
+  content: Dict[str, MediaType]
+  example: Any
+  examples: Dict[str, Union[Example, Reference]]
+
+
+
+
+class _RequestBody(TypedDict):
+  content: Dict[str, MediaType]
+
+class RequestBody(_RequestBody, total=False):
+  description: str
+  required: bool
+
+_APIKeySecurityScheme = TypedDict('APIKeySecurityScheme', {
+  'type': str,
+  'name': str,
+  'in': str
+})
+
+class APIKeySecurityScheme(_APIKeySecurityScheme, total=False):
+  description: str
+
+class _HTTPSecurityScheme(TypedDict):
   scheme: str
-  bearerFormat: Optional[str]
-  description: Optional[str]
   type: str
 
-class ImplicitOAuthFlow(BaseModel):
+class HTTPSecurityScheme(_HTTPSecurityScheme, total=False):
+  bearerFormat: str
+  description: str
+
+class _ImplicitOAuthFlow(TypedDict):
   authorizationUrl: str
-  refreshUrl: Optional[str]
   scopes: Dict[str, str]
 
-class PasswordOAuthFlow(BaseModel):
-  tokenUrl: str
-  refreshUrl: Optional[str]
-  scopes: Optional[Dict[str, str]]
+class ImplicitOAuthFlow(_ImplicitOAuthFlow, total=False):
+    refreshUrl: str
 
-class ClientCredentialsFlow(BaseModel):
-  tokenUrl: str
-  refreshUrl: Optional[str]
-  scopes: Optional[Dict[str, str]]
+class _OAuthFlow(TypedDict):
+    tokenUrl: str
 
-class ClientCredentialsFlow(BaseModel):
-  tokenUrl: str
-  refreshUrl: Optional[str]
-  scopes: Optional[Dict[str, str]]
+class PasswordOAuthFlow(_OAuthFlow, total=False):
+  refreshUrl: str
+  scopes: Dict[str, str]
 
-class AuthorizationCodeOAuthFlow(BaseModel):
-  authorizationUrl: str
-  tokenUrl: str
-  refreshUrl: Optional[str]
-  scopes: Optional[Dict[str, str]]
+class ClientCredentialsFlow(_OAuthFlow, total=False):
+  refreshUrl: str
+  scopes: Dict[str, str]
 
-class OAuthFlows(BaseModel):
-  implicit: Optional[ImplicitOAuthFlow]
-  password: Optional[PasswordOAuthFlow]
-  clientCredentials: Optional[ClientCredentialsFlow]
-  authorizationCode: Optional[AuthorizationCodeOAuthFlow]
+class ClientCredentialsFlow(_OAuthFlow, total=False):
+  refreshUrl: str
+  scopes: Dict[str, str]
 
-class OAuth2SecurityScheme(BaseModel):
-  type: str
-  flows: OAuthFlows
-  description: Optional[str]
+class _AuthorizationCodeOAuthFlow(_OAuthFlow):
+    authorizationUrl: str
 
-class OpenIdConnectSecurityScheme(BaseModel):
+class AuthorizationCodeOAuthFlow(_AuthorizationCodeOAuthFlow, total=False):     
+  refreshUrl: str
+  scopes: Dict[str, str]
+
+class OAuthFlows(TypedDict, total=False):
+  implicit: ImplicitOAuthFlow
+  password: PasswordOAuthFlow
+  clientCredentials: ClientCredentialsFlow
+  authorizationCode: AuthorizationCodeOAuthFlow
+
+class _OAuth2SecurityScheme(TypedDict):
+    type: str
+    flows: OAuthFlows
+
+class OAuth2SecurityScheme(_OAuth2SecurityScheme, total=False):
+  description: str
+
+class _OpenIdConnectSecurityScheme(TypedDict):
   type: str
   openIdConnectUrl: str
-  description: Optional[str]
+
+class OpenIdConnectSecurityScheme(_OpenIdConnectSecurityScheme, total=False):   
+  description: str
 
 SecurityScheme = Union[APIKeySecurityScheme, HTTPSecurityScheme, OAuth2SecurityScheme, OpenIdConnectSecurityScheme, str]
 
 Responses = Dict[str, Union[Response, Reference]]
 SecurityRequirement = Dict[str, List[str]]
 
-class PathItem(BaseModel):
-  rrrrrrrrref: Optional[str] = XSchema(None, alias='$ref')
-  summary: Optional[str]
-  description: Optional[str]
-  servers: Optional[List[Server]]
-  parameters: Optional[List[Union[Parameter, Reference]]]
-  get: Optional[Operation]
-  put: Optional[Operation]
-  post: Optional[Operation]
-  delete: Optional[Operation]
-  options: Optional[Operation]
-  head: Optional[Operation]
-  patch: Optional[Operation]
-  trace: Optional[Operation]
+PathItem = TypedDict('PathItem', {
+  '$ref': str,
+  'summary': str,
+  'description': str,
+  'servers': List[Server],
+  'parameters': List[Union[Parameter, Reference]],
+  'get': Operation,
+  'put': Operation,
+  'post': Operation,
+  'delete': Operation,
+  'options': Operation,
+  'head': Operation,
+  'patch': Operation,
+  'trace': Operation,
+}, total=False)
 
 Callback = Dict[str, PathItem]
 
-class Components(BaseModel):
-  schemas: Optional[Dict[str, Union[Schema, Reference]]]
-  responses: Optional[Dict[str, Union[Response, Reference]]]
-  parameters: Optional[Dict[str, Union[Parameter, Reference]]]
-  examples: Optional[Dict[str, Union[Example, Reference]]]
-  requestBodies: Optional[Dict[str, Union[RequestBody, Reference]]]
-  headers: Optional[Dict[str, Union[Header, Reference]]]
-  securitySchemes: Optional[Dict[str, Union[SecurityScheme, Reference]]]
-  links: Optional[Dict[str, Union[Link, Reference]]]
-  callbacks: Optional[Dict[str, Union[Callback, Reference]]]
+class Components(TypedDict, total=False):
+  schemas: Dict[str, Union[Schema, Reference]]
+  responses: Dict[str, Union[Response, Reference]]
+  parameters: Dict[str, Union[Parameter, Reference]]
+  examples: Dict[str, Union[Example, Reference]]
+  requestBodies: Dict[str, Union[RequestBody, Reference]]
+  headers: Dict[str, Union[Header, Reference]]
+  securitySchemes: Dict[str, Union[SecurityScheme, Reference]]
+  links: Dict[str, Union[Link, Reference]]
+  callbacks: Dict[str, Union[Callback, Reference]]
 
 Paths = Dict[str, PathItem]
 
-class Tag(BaseModel):
+class _Tag(TypedDict):
   name: str
-  description: Optional[str]
-  externalDocs: Optional[ExternalDocumentation]
 
-class OpenAPIObject(BaseModel):
+class Tag(_Tag, total=False):
+  description: str
+  externalDocs: ExternalDocumentation
+
+class _OpenAPIObject(TypedDict):
   openapi: str
   info: Info
-  externalDocs: Optional[ExternalDocumentation]
-  servers: Optional[List[Server]]
-  security: Optional[List[SecurityRequirement]]
-  tags: Optional[List[Tag]]
   paths: Paths
-  components: Optional[Components]
 
-Discriminator.update_forward_refs()
-ExternalDocumentation.update_forward_refs()
-XML.update_forward_refs()
-Reference.update_forward_refs()
-Schema.update_forward_refs()
-Contact.update_forward_refs()
-License.update_forward_refs()
-Info.update_forward_refs()
-ServerVariable.update_forward_refs()
-Server.update_forward_refs()
-Link.update_forward_refs()
-Example.update_forward_refs()
-Encoding.update_forward_refs()
-MediaType.update_forward_refs()
-Header.update_forward_refs()
-Operation.update_forward_refs()
-Response.update_forward_refs()
-Parameter.update_forward_refs()
-RequestBody.update_forward_refs()
-APIKeySecurityScheme.update_forward_refs()
-HTTPSecurityScheme.update_forward_refs()
-ImplicitOAuthFlow.update_forward_refs()
-PasswordOAuthFlow.update_forward_refs()
-ClientCredentialsFlow.update_forward_refs()
-ClientCredentialsFlow.update_forward_refs()
-AuthorizationCodeOAuthFlow.update_forward_refs()
-OAuthFlows.update_forward_refs()
-OAuth2SecurityScheme.update_forward_refs()
-OpenIdConnectSecurityScheme.update_forward_refs()
-PathItem.update_forward_refs()
-Components.update_forward_refs()
-Tag.update_forward_refs()
+class OpenAPIObject(_OpenAPIObject, total=False):
+  externalDocs: ExternalDocumentation
+  servers: List[Server]
+  security: List[SecurityRequirement]
+  tags: List[Tag]
+  components: Components
+
