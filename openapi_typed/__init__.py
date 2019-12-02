@@ -223,10 +223,6 @@ class ClientCredentialsFlow(_OAuthFlow, total=False):
   refreshUrl: str
   scopes: Dict[str, str]
 
-class ClientCredentialsFlow(_OAuthFlow, total=False):
-  refreshUrl: str
-  scopes: Dict[str, str]
-
 class _AuthorizationCodeOAuthFlow(_OAuthFlow):
     authorizationUrl: str
 
