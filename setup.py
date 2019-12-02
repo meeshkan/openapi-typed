@@ -2,10 +2,10 @@ from setuptools import setup
 
 setup(name='openapi-typed',
       version='0.0.0',
-      description='The funniest joke in the world',
+      description='TypedDict typings for OpenAPI specification',
       url='http://github.com/unmock/openapi-typed',
-      author='Mike Solomon',
-      author_email='mike@meeshkan.com',
+      author='Meeshkan',
+      author_email='dev@meeshkan.com',
       license='MIT',
       packages=['openapi_typed'],
       install_requires=[
