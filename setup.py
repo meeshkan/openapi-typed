@@ -56,6 +56,11 @@ class SetupCommand(Command):
         rmtree(directory, ignore_errors=True)
 
 
+def build():
+    os.system(
+        "{executable} setup.py sdist bdist_wheel --universal".format(executable=sys.executable))
+
+
 class BuildDistCommand(SetupCommand):
     """Support setup.py upload."""
     description = "Build the package."
@@ -65,8 +70,7 @@ class BuildDistCommand(SetupCommand):
         self.rmdir_if_exists(os.path.join(here, 'dist'))
 
         self.status("Building Source and Wheel (universal) distribution...")
-        os.system(
-            "{executable} setup.py sdist bdist_wheel --universal".format(executable=sys.executable))
+        build()
         sys.exit()
 
 
@@ -80,8 +84,7 @@ class UploadCommand(SetupCommand):
         self.rmdir_if_exists(os.path.join(here, 'dist'))
 
         self.status("Building Source and Wheel (universal) distribution...")
-        os.system(
-            "{executable} setup.py sdist bdist_wheel --universal".format(executable=sys.executable))
+        build()
 
         self.status("Uploading the package to PyPI via Twine...")
         os.system("twine upload dist/*")
