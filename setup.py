@@ -24,7 +24,8 @@ REQUIRED = [
 DEV = [
     'pytest',
     'setuptools',
-    'twine'
+    'twine',
+    'wheel'
 ]
 
 VERSION = '0.0.0'
