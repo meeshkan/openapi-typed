@@ -7,7 +7,7 @@ Python typings for [OpenAPI](https://swagger.io/specification/) using [TypedDict
 Install package from [PyPI](https://pypi.org/project/openapi-typed/).
 
 ```bash
-pip install openapi_typed
+pip install openapi-typed
 ```
 
 ## Usage
