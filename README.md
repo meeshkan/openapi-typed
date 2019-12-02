@@ -13,13 +13,15 @@ pip install openapi_typed
 ```python
 from openapi_typed import OpenAPIObject, Info
 
-openapi = OpenAPIObject(
+# Valid OpenAPIObject
+openapi_valid = OpenAPIObject(
     openapi="3.0.0",
     info=Info(
         title="My API",
         version="0.0.0")
     )
 
+# Invalid OpenAPIObject
 openapi_invalid = OpenAPIObject(
     openap="3.0.0",  # Type-check error, unknown attribute
     info=Info(
