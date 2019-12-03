@@ -1,4 +1,4 @@
-from typing import Optional, List, Union, Any, Dict
+from typing import List, Union, Any, Dict
 from typing_extensions import TypedDict
 
 class _Discriminator(TypedDict):
