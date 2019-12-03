@@ -1,5 +1,8 @@
 # OpenAPI typed
 
+[![CircleCI](https://circleci.com/gh/unmock/openapi-typed.svg?style=svg)](https://circleci.com/gh/unmock/openapi-typed)
+[![PyPI](https://img.shields.io/pypi/dm/openapi-typed.svg)](https://pypi.python.org/pypi)
+
 Python typings for [OpenAPI](https://swagger.io/specification/) using [TypedDict](https://www.python.org/dev/peps/pep-0589/).
 
 ## Installation
