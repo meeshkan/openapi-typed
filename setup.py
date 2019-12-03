@@ -117,6 +117,9 @@ setup(name=NAME,
       license='MIT',
       packages=['openapi_typed'],
       include_package_data=True,
+      package_data={
+          'openapi_typed': ['py.typed']
+      },
       install_requires=REQUIRED,
       extras_require=EXTRAS,
       classifiers=[
