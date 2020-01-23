@@ -92,7 +92,7 @@ class ServerVariable(_ServerVariable, total=False):
 class _Server(TypedDict):
   url: str
 
-class Server(TypedDict, total=False):
+class Server(_Server, total=False):
   description: str
   variables: Dict[str, ServerVariable]
 
