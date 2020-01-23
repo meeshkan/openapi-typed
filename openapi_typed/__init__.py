@@ -41,13 +41,13 @@ Schema = TypedDict('Schema',
     'required': List[str],
     'enum': List[Any],
     'type': str,
-    'not': Union['Schema', Reference],
-    'allOf': List[Union['Schema', Reference]],
-    'oneOf': List[Union['Schema', Reference]],
-    'anyOf': List[Union['Schema', Reference]],
-    'items': Union[List[Union['Schema', Reference]], 'Schema', Reference],      
-    'properties': Dict[str, Union['Schema', Reference]],
-    'additionalProperties': Union['Schema', Reference, bool],
+    'not': Union['Schema', Reference],  # type: ignore  # Forward references don't work in the old class declaration syntax
+    'allOf': List[Union['Schema', Reference]],  # type: ignore
+    'oneOf': List[Union['Schema', Reference]],  # type: ignore
+    'anyOf': List[Union['Schema', Reference]],  # type: ignore
+    'items': Union[List[Union['Schema', Reference]], 'Schema', Reference],  # type: ignore
+    'properties': Dict[str, Union['Schema', Reference]],  # type: ignore
+    'additionalProperties': Union['Schema', Reference, bool],  # type: ignore
     'description': str,
     'format': str,
     'default': Any,
@@ -304,4 +304,3 @@ class OpenAPIObject(_OpenAPIObject, total=False):
   security: List[SecurityRequirement]
   tags: List[Tag]
   components: Components
-
