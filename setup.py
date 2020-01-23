@@ -72,6 +72,15 @@ class BuildDistCommand(SetupCommand):
         build()
         sys.exit()
 
+def type_check():
+    return os.system("pyright --lib")
+
+class TypeCheckCommand(SetupCommand):
+    """Run type-checking."""
+    description = "Run type-checking."
+
+    def run(self):
+        sys.exit(type_check())
 
 class UploadCommand(SetupCommand):
     """Support setup.py upload."""
@@ -128,5 +137,8 @@ setup(name=NAME,
       ],
       zip_safe=False,
       cmdclass={'dist': BuildDistCommand,
-                'upload': UploadCommand, 'test': TestCommand}
+                'upload': UploadCommand,
+                'test': TestCommand,
+                'typecheck': TypeCheckCommand
+                }
       )
