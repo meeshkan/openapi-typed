@@ -1,6 +1,6 @@
 # OpenAPI typed
 
-[![CircleCI](https://circleci.com/gh/Meeshkan/openapi-typed.svg?style=shield)](https://circleci.com/gh/Meeshkan/openapi-typed)
+[![CircleCI](https://circleci.com/gh/unmock/openapi-typed.svg?style=shield)](https://circleci.com/gh/Meeshkan/openapi-typed)
 [![PyPi](https://img.shields.io/pypi/pyversions/openapi-typed)](https://pypi.org/project/openapi-typed/)
 [![License](https://img.shields.io/pypi/l/openapi-typed)](LICENSE)
 
