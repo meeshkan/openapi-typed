@@ -1,11 +1,11 @@
-from typing import List, Union, Any, Dict
+from typing import Sequence, Union, Any, Mapping
 from typing_extensions import TypedDict
 
 class _Discriminator(TypedDict):
   propertyName: str
 
 class Discriminator(_Discriminator, total=False):
-  mapping: Dict[str, str]
+  mapping: Mapping[str, str]
 
 
 class _ExternalDocumentation(TypedDict):
@@ -38,15 +38,15 @@ Schema = TypedDict('Schema',
     'uniqueItems': bool,
     'maxProperties': float,
     'minProperties': float,
-    'required': List[str],
-    'enum': List[Any],
+    'required': Sequence[str],
+    'enum': Sequence[Any],
     'type': str,
     'not': Union['Schema', Reference],  # type: ignore  # Forward references don't work in the old class declaration syntax
-    'allOf': List[Union['Schema', Reference]],  # type: ignore
-    'oneOf': List[Union['Schema', Reference]],  # type: ignore
-    'anyOf': List[Union['Schema', Reference]],  # type: ignore
+    'allOf': Sequence[Union['Schema', Reference]],  # type: ignore
+    'oneOf': Sequence[Union['Schema', Reference]],  # type: ignore
+    'anyOf': Sequence[Union['Schema', Reference]],  # type: ignore
     'items': Union[List[Union['Schema', Reference]], 'Schema', Reference],  # type: ignore
-    'properties': Dict[str, Union['Schema', Reference]],  # type: ignore
+    'properties': Mapping[str, Union['Schema', Reference]],  # type: ignore
     'additionalProperties': Union['Schema', Reference, bool],  # type: ignore
     'description': str,
     'format': str,
@@ -86,7 +86,7 @@ class _ServerVariable(TypedDict):
   default: str
 
 class ServerVariable(_ServerVariable, total=False):
-  enum: List[str]
+  enum: Sequence[str]
   description: str
 
 class _Server(TypedDict):
@@ -94,12 +94,12 @@ class _Server(TypedDict):
 
 class Server(_Server, total=False):
   description: str
-  variables: Dict[str, ServerVariable]
+  variables: Mapping[str, ServerVariable]
 
 class Link(TypedDict, total=False):
   operationId: str
   operationRef: str
-  parameters: Dict[str, Any]
+  parameters: Mapping[str, Any]
   requestBody: Any
   description: str
   server: Server
@@ -112,7 +112,7 @@ class Example(TypedDict, total=False):
 
 class Encoding(TypedDict, total=False):
     contentType: str
-    headers: Dict[str, 'Header']
+    headers: Mapping[str, 'Header']
     style: str
     explode: bool
     allowReserved: bool
@@ -120,8 +120,8 @@ class Encoding(TypedDict, total=False):
 class MediaType(TypedDict, total=False):
   schema: Union[Schema, Reference]
   example: Any
-  examples: Dict[str, Union[Example, Reference]]
-  encoding: Dict[str, Encoding]
+  examples: Mapping[str, Union[Example, Reference]]
+  encoding: Mapping[str, Encoding]
 
 class Header(TypedDict, total=False):
   description: str
@@ -132,33 +132,33 @@ class Header(TypedDict, total=False):
   explode: bool
   allowReserved: bool
   schema: Union[Schema, Reference]
-  content: Dict[str, MediaType]
+  content: Mapping[str, MediaType]
   example: Any
-  examples: Dict[str, Union[Example, Reference]]
+  examples: Mapping[str, Union[Example, Reference]]
 
 class _Operation(TypedDict):
-    responses: 'Responses'
+    responses: 'Responses'  # type: ignore
 
 class Operation(_Operation, total=False):
-  tags: List[str]
+  tags: Sequence[str]
   summary: str
   description: str
   externalDocs: ExternalDocumentation
   operationId: str
-  parameters: List[Union['Parameter', Reference]]
+  parameters: Sequence[Union['Parameter', Reference]]
   requestBody: Union['RequestBody', Reference]
-  callbacks: Dict[str, Union['Callback', Reference]]
+  callbacks: Mapping[str, Union['Callback', Reference]]
   deprecated: bool
-  security: List['SecurityRequirement']
-  servers: List[Server]
+  security: Sequence['SecurityRequirement']
+  servers: Sequence[Server]
 
 class _Response(TypedDict):
   description: str
 
 class Response(_Response, total=False):
-  headers: Dict[str, Union[Header, Reference]]
-  content: Dict[str, MediaType]
-  links: Dict[str, Union[Link, Reference]]
+  headers: Mapping[str, Union[Header, Reference]]
+  content: Mapping[str, MediaType]
+  links: Mapping[str, Union[Link, Reference]]
 
 _Parameter = TypedDict('_Parameter', {
   'name': str,
@@ -174,15 +174,15 @@ class Parameter(_Parameter, total=False):
   explode: bool
   allowReserved: bool
   schema: Union[Schema, Reference]
-  content: Dict[str, MediaType]
+  content: Mapping[str, MediaType]
   example: Any
-  examples: Dict[str, Union[Example, Reference]]
+  examples: Mapping[str, Union[Example, Reference]]
 
 
 
 
 class _RequestBody(TypedDict):
-  content: Dict[str, MediaType]
+  content: Mapping[str, MediaType]
 
 class RequestBody(_RequestBody, total=False):
   description: str
@@ -207,7 +207,7 @@ class HTTPSecurityScheme(_HTTPSecurityScheme, total=False):
 
 class _ImplicitOAuthFlow(TypedDict):
   authorizationUrl: str
-  scopes: Dict[str, str]
+  scopes: Mapping[str, str]
 
 class ImplicitOAuthFlow(_ImplicitOAuthFlow, total=False):
     refreshUrl: str
@@ -217,18 +217,18 @@ class _OAuthFlow(TypedDict):
 
 class PasswordOAuthFlow(_OAuthFlow, total=False):
   refreshUrl: str
-  scopes: Dict[str, str]
+  scopes: Mapping[str, str]
 
 class ClientCredentialsFlow(_OAuthFlow, total=False):
   refreshUrl: str
-  scopes: Dict[str, str]
+  scopes: Mapping[str, str]
 
 class _AuthorizationCodeOAuthFlow(_OAuthFlow):
     authorizationUrl: str
 
 class AuthorizationCodeOAuthFlow(_AuthorizationCodeOAuthFlow, total=False):     
   refreshUrl: str
-  scopes: Dict[str, str]
+  scopes: Mapping[str, str]
 
 class OAuthFlows(TypedDict, total=False):
   implicit: ImplicitOAuthFlow
@@ -252,15 +252,15 @@ class OpenIdConnectSecurityScheme(_OpenIdConnectSecurityScheme, total=False):
 
 SecurityScheme = Union[APIKeySecurityScheme, HTTPSecurityScheme, OAuth2SecurityScheme, OpenIdConnectSecurityScheme, str]
 
-Responses = Dict[str, Union[Response, Reference]]
-SecurityRequirement = Dict[str, List[str]]
+Responses = Mapping[str, Union[Response, Reference]]
+SecurityRequirement = Mapping[str, Sequence[str]]
 
 PathItem = TypedDict('PathItem', {
   '$ref': str,
   'summary': str,
   'description': str,
-  'servers': List[Server],
-  'parameters': List[Union[Parameter, Reference]],
+  'servers': Sequence[Server],
+  'parameters': Sequence[Union[Parameter, Reference]],
   'get': Operation,
   'put': Operation,
   'post': Operation,
@@ -271,20 +271,20 @@ PathItem = TypedDict('PathItem', {
   'trace': Operation,
 }, total=False)
 
-Callback = Dict[str, PathItem]
+Callback = Mapping[str, PathItem]
 
 class Components(TypedDict, total=False):
-  schemas: Dict[str, Union[Schema, Reference]]
-  responses: Dict[str, Union[Response, Reference]]
-  parameters: Dict[str, Union[Parameter, Reference]]
-  examples: Dict[str, Union[Example, Reference]]
-  requestBodies: Dict[str, Union[RequestBody, Reference]]
-  headers: Dict[str, Union[Header, Reference]]
-  securitySchemes: Dict[str, Union[SecurityScheme, Reference]]
-  links: Dict[str, Union[Link, Reference]]
-  callbacks: Dict[str, Union[Callback, Reference]]
+  schemas: Mapping[str, Union[Schema, Reference]]
+  responses: Mapping[str, Union[Response, Reference]]
+  parameters: Mapping[str, Union[Parameter, Reference]]
+  examples: Mapping[str, Union[Example, Reference]]
+  requestBodies: Mapping[str, Union[RequestBody, Reference]]
+  headers: Mapping[str, Union[Header, Reference]]
+  securitySchemes: Mapping[str, Union[SecurityScheme, Reference]]
+  links: Mapping[str, Union[Link, Reference]]
+  callbacks: Mapping[str, Union[Callback, Reference]]
 
-Paths = Dict[str, PathItem]
+Paths = Mapping[str, PathItem]
 
 class _Tag(TypedDict):
   name: str
@@ -300,7 +300,7 @@ class _OpenAPIObject(TypedDict):
 
 class OpenAPIObject(_OpenAPIObject, total=False):
   externalDocs: ExternalDocumentation
-  servers: List[Server]
-  security: List[SecurityRequirement]
-  tags: List[Tag]
+  servers: Sequence[Server]
+  security: Sequence[SecurityRequirement]
+  tags: Sequence[Tag]
   components: Components
