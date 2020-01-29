@@ -56,7 +56,7 @@ class SetupCommand(Command):
 
 
 def build():
-    os.system(
+    return os.system(
         "{executable} setup.py sdist bdist_wheel --universal".format(executable=sys.executable))
 
 
@@ -72,8 +72,10 @@ class BuildDistCommand(SetupCommand):
         build()
         sys.exit()
 
+
 def type_check():
     return os.system("pyright --lib")
+
 
 class TypeCheckCommand(SetupCommand):
     """Run type-checking."""
@@ -81,6 +83,7 @@ class TypeCheckCommand(SetupCommand):
 
     def run(self):
         sys.exit(type_check())
+
 
 class UploadCommand(SetupCommand):
     """Support setup.py upload."""
@@ -92,16 +95,22 @@ class UploadCommand(SetupCommand):
         self.rmdir_if_exists(os.path.join(here, 'dist'))
 
         self.status("Building Source and Wheel (universal) distribution...")
-        build()
+        exit_code = build()
+
+        if exit_code != 0:
+            sys.exit(exit_code)
 
         self.status("Uploading the package to PyPI via Twine...")
-        os.system("twine upload dist/*")
+        exit_code = os.system("twine upload dist/*")
+
+        if exit_code != 0:
+            sys.exit(exit_code)
 
         self.status("Pushing git tags...")
         os.system("git tag v{about}".format(about=VERSION))
-        os.system("git push --tags")
+        exit_code = os.system("git push --tags")
 
-        sys.exit()
+        sys.exit(exit_code)
 
 
 class TestCommand(SetupCommand):
