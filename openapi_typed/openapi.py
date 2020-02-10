@@ -112,7 +112,7 @@ class Example(TypedDict, total=False):
 
 class Encoding(TypedDict, total=False):
     contentType: str
-    headers: Mapping[str, 'Header']
+    headers: Mapping[str, 'Header']  # type: ignore
     style: str
     explode: bool
     allowReserved: bool
@@ -145,9 +145,9 @@ class Operation(_Operation, total=False):
   description: str
   externalDocs: ExternalDocumentation
   operationId: str
-  parameters: Sequence[Union['Parameter', Reference]]
-  requestBody: Union['RequestBody', Reference]
-  callbacks: Mapping[str, Union['Callback', Reference]]
+  parameters: Sequence[Union['Parameter', Reference]]  # type: ignore
+  requestBody: Union['RequestBody', Reference]  # type: ignore
+  callbacks: Mapping[str, Union['Callback', Reference]]  # type: ignore
   deprecated: bool
   security: Sequence['SecurityRequirement']
   servers: Sequence[Server]
@@ -252,7 +252,7 @@ class OpenIdConnectSecurityScheme(_OpenIdConnectSecurityScheme, total=False):
 
 SecurityScheme = Union[APIKeySecurityScheme, HTTPSecurityScheme, OAuth2SecurityScheme, OpenIdConnectSecurityScheme, str]
 
-Responses = Mapping[str, Union[Response, Reference]]
+Responses = Mapping[str, Union[Response, Reference]]  # type: ignore
 SecurityRequirement = Mapping[str, Sequence[str]]
 
 PathItem = TypedDict('PathItem', {
@@ -271,7 +271,7 @@ PathItem = TypedDict('PathItem', {
   'trace': Operation,
 }, total=False)
 
-Callback = Mapping[str, PathItem]
+Callback = Mapping[str, PathItem]  # type: ignore
 
 class Components(TypedDict, total=False):
   schemas: Mapping[str, Union[Schema, Reference]]
@@ -284,7 +284,7 @@ class Components(TypedDict, total=False):
   links: Mapping[str, Union[Link, Reference]]
   callbacks: Mapping[str, Union[Callback, Reference]]
 
-Paths = Mapping[str, PathItem]
+Paths = Mapping[str, PathItem]  # type: ignore
 
 class _Tag(TypedDict):
   name: str
