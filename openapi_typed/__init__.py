@@ -45,7 +45,7 @@ Schema = TypedDict('Schema',
     'allOf': Sequence[Union['Schema', Reference]],  # type: ignore
     'oneOf': Sequence[Union['Schema', Reference]],  # type: ignore
     'anyOf': Sequence[Union['Schema', Reference]],  # type: ignore
-    'items': Union[List[Union['Schema', Reference]], 'Schema', Reference],  # type: ignore
+    'items': Union[Sequence[Union['Schema', Reference]], 'Schema', Reference],  # type: ignore
     'properties': Mapping[str, Union['Schema', Reference]],  # type: ignore
     'additionalProperties': Union['Schema', Reference, bool],  # type: ignore
     'description': str,
