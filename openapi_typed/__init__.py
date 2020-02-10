@@ -1,1 +1,1 @@
-from openapi import *
+from .openapi import *
