@@ -1,6 +1,6 @@
 # OpenAPI typed
 
-[![CircleCI](https://circleci.com/gh/Meeshkan/openapi-typed.svg?style=shield)](https://circleci.com/gh/Meeshkan/openapi-typed)
+[![github](https://github.com/Meeshkan/openapi-typed/workflows/Python%20build/badge.svg)](https://github.com/Meeshkan/openapi-typed/actions)
 [![PyPI](https://img.shields.io/pypi/dm/openapi-typed.svg)](https://pypi.org/project/openapi-typed/)
 [![PyPi](https://img.shields.io/pypi/pyversions/openapi-typed)](https://pypi.org/project/openapi-typed/)
 [![License](https://img.shields.io/pypi/l/openapi-typed)](LICENSE)
@@ -51,6 +51,12 @@ Run tests:
 pytest
 # OR
 python setup.py test
+```
+
+Run type-checks with `mypy`:
+
+```bash
+mypy openapi_typed
 ```
 
 Build package:
