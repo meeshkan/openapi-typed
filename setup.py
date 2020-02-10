@@ -22,6 +22,7 @@ REQUIRED = [
 ]
 
 DEV = [
+    'mypy',
     'pytest',
     'setuptools',
     'twine',

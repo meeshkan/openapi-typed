@@ -53,6 +53,12 @@ pytest
 python setup.py test
 ```
 
+Run type-checks with `mypy`:
+
+```bash
+mypy openapi_typed
+```
+
 Build package:
 
 ```bash
