@@ -1,6 +1,6 @@
 # OpenAPI typed
 
-[![CircleCI](https://circleci.com/gh/Meeshkan/loas3.svg?style=svg)](https://circleci.com/gh/Meeshkan/loas3)
+[![CircleCI](https://circleci.com/gh/Meeshkan/openapi-typed.svg?style=svg)](https://circleci.com/gh/Meeshkan/openapi-typed)
 [![PyPI](https://img.shields.io/pypi/dm/openapi-typed.svg)](https://pypi.org/project/openapi-typed/)
 [![PyPi](https://img.shields.io/pypi/pyversions/openapi-typed)](https://pypi.org/project/openapi-typed/)
 [![License](https://img.shields.io/pypi/l/openapi-typed)](LICENSE)
